@@ -15,7 +15,7 @@ function Users() {
     }, [])
 
     const handleDelete = (id) => {
-        axios.delete("/deleteUser/" + id)
+        api.delete("/deleteUser/" + id)
             .then(res => {
                 console.log(res)
                 window.location.reload()
@@ -50,7 +50,7 @@ function Users() {
 
 
     return (
-        <div className="conatiner py-4 bg-primary vh-100">
+        <div className="conatiner py-4 vh-100">
             <div className="card shadow p-4">
                 <h2 className="text-center mb-3">User Management System</h2>
 
