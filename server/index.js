@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express=require('express')
 const mongoose=require('mongoose')
 const cors=require('cors')
@@ -7,7 +8,10 @@ const app=express();
 app.use(express.json())//this for whenever we send json data from client to server to the button 
 app.use(cors())
 
-mongoose.connect("mongodb://127.0.0.1:27017/crud")//mongodb connection
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("MongoDB connected"))
+  .catch(err => console.log(err));
+//mongodb connection
 //basic auth middleware
 const basicAuth = (req, res, next) => {
     const authHeader = req.headers['authorization'];
@@ -70,6 +74,15 @@ app.post("/createUser",(req,res) => {
     .then(users => res.json(users))
     .catch(err => res.json(err))
 })
+
+const path = require('path');
+
+// Serve React frontend
+app.use(express.static(path.join(__dirname, '../client/build')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+});
 
 //dispaly all users
 app.listen(3001,() => {
